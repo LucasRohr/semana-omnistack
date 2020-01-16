@@ -1,0 +1,18 @@
+.button {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: rgb(113, 89, 193);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: white;
+    color: rgb(113, 89, 193);
+    transition: .2s;
+    border: 2px solid rgb(113, 89, 193);
+}

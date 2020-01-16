@@ -1,0 +1,30 @@
+.form-container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 0 13px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+.form-inputs-container {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-coords-inputs-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
