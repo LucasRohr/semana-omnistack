@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { homeStyle } from './home.style'
-import MapView, { Marker } from 'react-native-maps'
+import MapView from 'react-native-maps'
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location'
 import { getDevsSearch } from '../../services/dev/dev.service'
 import { MapMarker } from '../../components/map-marker/map-marker.component'
 import { Search } from '../../components/search/search.component'
-import { Text } from 'react-native'
+
+import { connect, disconnect, subscribeToNewDevs } from '../../services'
 
 const Home = ({ navigation }) => {
 
     const [ coords, setCoords ] = useState(null)
     const [ devs, setDevs ] = useState([])
     const [ search, setSearch ] = useState('')
+
+    useEffect(() => {
+        getInitialLocation()
+    }, [])
+
+    useEffect(() => {
+        subscribeToNewDevs(dev => setDevs([ ...devs, dev ]))
+    }, [devs])
 
     const navigateToProfile = (githubUsername) => {
         navigation.push('Profile', { githubUsername })
@@ -44,16 +53,19 @@ const Home = ({ navigation }) => {
         setCoords(region)
     }
 
-    const getDevelopersSearch = async () => {
-        const devs = await getDevsSearch(coords.latitude, coords.longitude, search)
-        console.log(coords);
-        
-        setDevs(devs)
+    const setupWebsocket = () => {
+        disconnect()
+
+        const { latitude, longitude } =  coords
+
+        connect(latitude, longitude, search)
     }
 
-    useEffect(() => {
-        getInitialLocation()
-    }, [])
+    const getDevelopersSearch = async () => {
+        setupWebsocket()
+        const devs = await getDevsSearch(coords.latitude, coords.longitude, search)
+        setDevs(devs)
+    }
 
     const mapDevelopersLocations = () => (
         devs.map((dev, key) => (

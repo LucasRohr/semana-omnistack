@@ -1,6 +1,7 @@
 const axios = require('axios')
 const dev = require('../../models/dev.model')
 const stringAsList = require('../../helpers/string-as-list')
+const { findConnections, sendMessage } = require('../../websocket')
 
 module.exports = {
 
@@ -29,6 +30,16 @@ module.exports = {
                 location
             })
             
+            const sendSocketMessageTo = findConnections(
+                {
+                    latitude,
+                    longitude
+                },
+                techsList
+            )
+
+            sendMessage(sendSocketMessageTo, 'new-dev', dev)
+
             return devResponse
         }
         
